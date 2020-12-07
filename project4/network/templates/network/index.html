@@ -25,13 +25,13 @@
         <div class="row h-100 justify-content-center aling-items-center">
             <div class="Post col-sm-6" id="post-{{ post.id }}">
                 <div id="user-{{post.user.id}}">
-                    <strong>{{post.user.username}}</strong>
+                    <strong><a href="{% url 'Profile' post.user.id %}">{{post.user.username}}</a></strong>
                     <hr>
                     <div id="text-Contend">
                         <p>{{post.Contend}}</p>
-                        <div id="Post-time">
+                        <div class="Post-Date-Span" id="Post-time">
                         <hr>
-                            {{post.Date}}
+                            {{post.Date}} <span class="font-weight-bold text-right">Likes: 0</span>
                         </div>
                     </div>
                 </div>

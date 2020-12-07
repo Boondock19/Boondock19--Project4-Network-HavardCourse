@@ -89,3 +89,12 @@ def AddPost(request):
     else :
         posts=Post.objects.all()
         return render(request,"network/index.hmtl")
+
+def Profile(request,user_id):
+    userprofile=User.objects.get(pk=user_id)
+    userposts=Post.objects.filter(user__id=user_id).order_by("-Date")   
+    paginator=Paginator(userposts,10)
+    page_number=request.GET.get("page")
+    page_obj=paginator.get_page(page_number)
+    context={"user":userprofile,"page_obj":page_obj}
+    return render(request,"network/ProfilePage.html",context)

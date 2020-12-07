@@ -3,3 +3,7 @@
     border-color:black;
     margin-top: 5px;
 }
+
+.Post span{
+    text-align: right;
+}

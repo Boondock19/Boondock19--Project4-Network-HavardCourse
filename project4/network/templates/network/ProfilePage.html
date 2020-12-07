@@ -1,0 +1,48 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row h-100 justify-content-center aling-items-center">
+        <div class="Post col-sm-12" >
+            <div id="Followers">
+                <strong>Followers: </strong>Cuenta de followers
+                <hr>
+                <div id="User-{user.id}">
+                    <strong>{{user.username}}</strong>
+                </div>
+                <hr>
+                <div id="Following">
+                    <strong>Following: </strong> Cuenta de Followings
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% for post in page_obj %}
+    <div class="container">
+        <div class="row h-100 justify-content-center aling-items-center">
+            <div class="Post col-sm-6" id="post-{{ post.id }}">
+                <div id="user-{{post.user.id}}">
+                    <strong>{{post.user.username}}</strong>
+                    <hr>
+                    <div id="text-Contend">
+                        <p>{{post.Contend}}</p>
+                        <div class="Post-Date-Span" id="Post-time">
+                        <hr>
+                            {{post.Date}} <span class="font-weight-bold text-right">Likes: 0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    {% endfor %}
+
+
+{% endblock %}
