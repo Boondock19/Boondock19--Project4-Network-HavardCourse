@@ -2,13 +2,45 @@
 
 {% block body %}
     {% if user.is_authenticated %}
-    <form method="POST">
-        <div>
-            <textarea name="NewPost" id="NewPost" cols="50" rows="5"></textarea>
+   
+    <div class="container">
+        <div class="row h-100 justify-content-center aling-items-center">
+            <div class="col-sm-6">
+                <form action="{% url 'index' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <textarea placeholder="POST SOMETHING!" class="form-control" name="NewPost" id="NewPost" cols="50" rows="5"></textarea>
+                    </div>
+                    <div>
+                        <button class="form-control" id="btn-NewPost" type="submit">Post</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-            <button type="submit">Post</button>
-        </div>
-    </form>
+    </div>
     {% endif %}
+
+    {% for post in page_obj %}
+    <div class="container">
+        <div class="row h-100 justify-content-center aling-items-center">
+            <div class="Post col-sm-6" id="post-{{ post.id }}">
+                <div id="user-{{post.user.id}}">
+                    <strong>{{post.user.username}}</strong>
+                    <hr>
+                    <div id="text-Contend">
+                        <p>{{post.Contend}}</p>
+                        <div id="Post-time">
+                        <hr>
+                            {{post.Date}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    {% endfor %}
+
 {% endblock %}
