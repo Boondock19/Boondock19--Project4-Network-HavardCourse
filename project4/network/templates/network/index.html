@@ -1,0 +1,14 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+    <form method="POST">
+        <div>
+            <textarea name="NewPost" id="NewPost" cols="50" rows="5"></textarea>
+        </div>
+        <div>
+            <button type="submit">Post</button>
+        </div>
+    </form>
+    {% endif %}
+{% endblock %}
