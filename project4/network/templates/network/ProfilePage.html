@@ -6,24 +6,39 @@
     <div class="row h-100 justify-content-center aling-items-center">
         <div class="Post col-sm-12" >
             <div id="Followers">
-                <strong>Followers: </strong>{{followers}}
+                <strong>Followers: </strong>{{followerscount}}
                 <hr>
                 <div id="User-{userprofile.id}">
                     <strong>{{userprofile.username}}</strong>
                 </div>
                 <hr>
                 <div id="Following">
-                    <strong>Following: </strong> {{following}}
+                    <strong>Following: </strong> {{followingcount}}
                 </div>
                 <hr>
             </div>
         </div>
     </div>
 </div>
-
-<div>
-    
-</div>
+{% if userprofile.username != user.username %}
+    {% if followers is True %}    
+        <div class="container">
+                <div class="row h-100 justify-content-end">
+                    <div class="col-sm-12">
+                        <span>Unfollow {{userprofile.username}}:</span> <button id="UnfollowButton"type="submit" class="btn btn-danger">Unfollow</button>
+                    </div>
+                </div>
+        </div>
+    {% else %}
+        <div class="container">
+            <div class="row h-100 justify-content-end">
+                <div class="col-sm-12">
+                    <span>Follow {{userprofile.username}}:</span> <button id="FollowButton"type="submit" class="btn btn-success">Follow</button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}
 
 {% for post in page_obj %}
     <div class="container">

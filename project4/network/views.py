@@ -96,12 +96,17 @@ def AddPost(request):
         return render(request,"network/index.hmtl")
 
 def ProfilePage(request,user_id):
+    userviewing=request.user
+    UserviewingFollows=False
     userprofile=Profile.objects.get(user__id=user_id)
     userposts=Post.objects.filter(user__id=user_id).order_by("-Date")   
-    userFollowers=userprofile.Follower.count()
-    userFollowing=userprofile.Following.count()
+    userFollowers=userprofile.Follower
+    userFollowing=userprofile.Following
+    if userFollowers.filter(pk=userviewing.id).exists():
+        UserviewingFollows=True
+
     paginator=Paginator(userposts,10)
     page_number=request.GET.get("page")
     page_obj=paginator.get_page(page_number)
-    context={"userprofile":userprofile.user,"followers":userFollowers,"following":userFollowing,"page_obj":page_obj}
+    context={"userprofile":userprofile.user,"followers":UserviewingFollows,"following":userFollowing,"followerscount":userFollowers.count(),"followingcount":userFollowing.count(),"page_obj":page_obj}
     return render(request,"network/ProfilePage.html",context)
