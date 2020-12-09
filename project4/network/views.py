@@ -103,5 +103,5 @@ def ProfilePage(request,user_id):
     paginator=Paginator(userposts,10)
     page_number=request.GET.get("page")
     page_obj=paginator.get_page(page_number)
-    context={"user":userprofile.user,"followers":userFollowers,"following":userFollowing,"page_obj":page_obj}
+    context={"userprofile":userprofile.user,"followers":userFollowers,"following":userFollowing,"page_obj":page_obj}
     return render(request,"network/ProfilePage.html",context)
