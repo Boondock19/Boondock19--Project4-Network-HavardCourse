@@ -65,13 +65,18 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password)
-            user.save()
+            Newuser = User.objects.create_user(username, email, password)
+            Newuser.save()
         except IntegrityError:
             return render(request, "network/register.html", {
                 "message": "Username already taken."
             })
-        login(request, user)
+        #Creates a profile for the new user
+        NewProfile=Profile()
+        NewProfile.user=Newuser
+        NewProfile.save()
+        login(request, Newuser)
+
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
@@ -90,11 +95,13 @@ def AddPost(request):
         posts=Post.objects.all()
         return render(request,"network/index.hmtl")
 
-def Profile(request,user_id):
-    userprofile=User.objects.get(pk=user_id)
+def ProfilePage(request,user_id):
+    userprofile=Profile.objects.get(user__id=user_id)
     userposts=Post.objects.filter(user__id=user_id).order_by("-Date")   
+    userFollowers=userprofile.Follower.count()
+    userFollowing=userprofile.Following.count()
     paginator=Paginator(userposts,10)
     page_number=request.GET.get("page")
     page_obj=paginator.get_page(page_number)
-    context={"user":userprofile,"page_obj":page_obj}
+    context={"user":userprofile.user,"followers":userFollowers,"following":userFollowing,"page_obj":page_obj}
     return render(request,"network/ProfilePage.html",context)
