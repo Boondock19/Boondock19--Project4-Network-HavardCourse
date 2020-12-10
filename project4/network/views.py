@@ -5,7 +5,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
 from .models import *
-
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 def index(request):
     
@@ -95,18 +97,64 @@ def AddPost(request):
         posts=Post.objects.all()
         return render(request,"network/index.hmtl")
 
+@csrf_exempt
 def ProfilePage(request,user_id):
+    
+    userprofile=Profile.objects.get(user__id=user_id)
     userviewing=request.user
     UserviewingFollows=False
-    userprofile=Profile.objects.get(user__id=user_id)
     userposts=Post.objects.filter(user__id=user_id).order_by("-Date")   
     userFollowers=userprofile.Follower
     userFollowing=userprofile.Following
-    if userFollowers.filter(pk=userviewing.id).exists():
-        UserviewingFollows=True
-
     paginator=Paginator(userposts,10)
     page_number=request.GET.get("page")
     page_obj=paginator.get_page(page_number)
-    context={"userprofile":userprofile.user,"followers":UserviewingFollows,"following":userFollowing,"followerscount":userFollowers.count(),"followingcount":userFollowing.count(),"page_obj":page_obj}
-    return render(request,"network/ProfilePage.html",context)
+    
+    
+    if request.method== "POST":
+        follows=request.POST.get('follows')
+        if follows=="Follow":
+            try: 
+                ##Add request.user to the followers list of userprofile
+                userFollowers.add(userviewing)
+                userprofile.save()
+
+                ##Add The user of userprofile to the following list of request.user
+                userviewingprofile=Profile.objects.get(user__id=request.user.id)
+                ## user of user profile:
+                Owner_of_profile=User.objects.get(id=user_id)
+                userviewingprofile.Following.add(Owner_of_profile)
+                userviewingprofile.save()
+                ##For the get request of the page
+                UserviewingFollows=True
+                Num_of_followers=userFollowers.count()
+                return JsonResponse({'status': 201, 'follows': "Unfollow", "followerscount": Num_of_followers}, status=201)
+            except:
+                JsonResponse({},status=404) 
+                return print(JsonResponse({},status=404))    
+        else:
+            ##Remove request.user of the followers list of userprofile
+            userFollowers.remove(userviewing)
+            userprofile.save()
+
+            ##Remove The user of userprofile of the following list of request.user
+            userviewingprofile=Profile.objects.get(user__id=request.user.id)
+            ## user of user profile:
+            Owner_of_profile=User.objects.get(id=user_id)
+            userviewingprofile.Following.remove(Owner_of_profile)
+            userviewingprofile.save()
+            ##For the get request of the page
+            UserviewingFollows=False
+            Num_of_followers=userFollowers.count()
+            return JsonResponse({'status': 201, 'follows': "Follow", "followerscount": Num_of_followers}, status=201)
+
+    else:
+        if userFollowers.filter(pk=userviewing.id).exists():
+            UserviewingFollows=True
+
+        context={"userprofile":userprofile.user,"followers":UserviewingFollows,"following":userFollowing,"followerscount":userFollowers.count(),
+        "followingcount":userFollowing.count(),"page_obj":page_obj}
+        return render(request,"network/ProfilePage.html",context)
+
+      
+    
