@@ -157,4 +157,12 @@ def ProfilePage(request,user_id):
         return render(request,"network/ProfilePage.html",context)
 
       
-    
+def FollowingPage(request):
+    userprofile=Profile.objects.get(user__id=request.user.id)
+    userfollowing=userprofile.Following.all()
+    posts=Post.objects.filter(user__in=userfollowing).order_by("-Date")   
+    paginator=Paginator(posts,10)
+    page_number=request.GET.get("page")
+    page_obj=paginator.get_page(page_number)
+    context={"page_obj":page_obj,"posts":posts}
+    return render(request, "network/FollowingPage.html",context)
