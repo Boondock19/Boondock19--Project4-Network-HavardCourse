@@ -153,7 +153,7 @@ def ProfilePage(request,user_id):
             UserviewingFollows=True
 
         context={"userprofile":userprofile.user,"followers":UserviewingFollows,"following":userFollowing,"followerscount":userFollowers.count(),
-        "followingcount":userFollowing.count(),"page_obj":page_obj}
+        "followingcount":userFollowing.count(),"page_obj":page_obj,"paginator":paginator}
         return render(request,"network/ProfilePage.html",context)
 
       
@@ -164,5 +164,5 @@ def FollowingPage(request):
     paginator=Paginator(posts,10)
     page_number=request.GET.get("page")
     page_obj=paginator.get_page(page_number)
-    context={"page_obj":page_obj,"posts":posts}
+    context={"page_obj":page_obj,"posts":posts,"paginator":paginator}
     return render(request, "network/FollowingPage.html",context)

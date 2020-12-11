@@ -43,4 +43,25 @@
 
     {% endfor %}
 
+    <div class="container">
+        <div class="row h-100 justify-content-center aling-items-center">
+            <div class="col-sm-3">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <a class="page-link" aria-label="Previous" href="?page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&laquo;</span></a>
+                        {% endif %}
+                        {% for page in paginator %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page.number }}">{{ page.number }}</a></li>
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <a class="page-link"  aria-label="Next" href="?page={{ page_obj.next_page_number }}"><span aria-hidden="true">&raquo;</span></a>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
