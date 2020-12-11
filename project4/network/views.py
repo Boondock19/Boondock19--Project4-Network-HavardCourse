@@ -23,7 +23,7 @@ def index(request):
         paginator=Paginator(posts,10)
         page_number=request.GET.get("page")
         page_obj=paginator.get_page(page_number)
-        context={"page_obj":page_obj,"posts":posts}
+        context={"page_obj":page_obj,"posts":posts,"paginator":paginator}
         return render(request, "network/index.html",context)
 
 
