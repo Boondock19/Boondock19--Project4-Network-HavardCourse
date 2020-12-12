@@ -9,5 +9,6 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     path("Profile/<int:user_id>",views.ProfilePage,name="Profile"),
-    path("Following", views.FollowingPage, name="FollowingPage")
+    path("Following", views.FollowingPage, name="FollowingPage"),
+    path("EditPost/",views.EditPost)
 ]

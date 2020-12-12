@@ -83,19 +83,17 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
-def AddPost(request):
+@csrf_exempt
+def EditPost(request):
     
     if request.method== "POST":
-        userPosting=User.username
-        NewPost=Post()
-        NewPost.user=userPosting
-        NewPost.contend=request.POST["NewPost"]
-        NewPost.save()
-        return HttpResponseRedirect(reverse("index"))
-
-    else :
-        posts=Post.objects.all()
-        return render(request,"network/index.hmtl")
+        Post_id=request.POST.get("id")
+        NewContend=request.POST.get('content')
+        Post_target=Post.objects.get(id=Post_id)
+        Post_target.Contend=NewContend
+        # REMEMBER THAT .strip() works for white space in content
+        Post_target.save()
+        return JsonResponse({}, status=201)
 
 @csrf_exempt
 def ProfilePage(request,user_id):
