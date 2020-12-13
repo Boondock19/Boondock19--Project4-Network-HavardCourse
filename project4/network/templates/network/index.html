@@ -36,9 +36,9 @@
                             <hr>
                             {{post.Date}} 
                             {% if request.user in post.like.all %}
-                                <button id="like-btn-{{ post.id }}" class="btn btn-outline-secondary Likebtn" data-Liked="yes" data-post_id="{{ post.id }}">Dislike</button> <span id="like-count-{{ post.id }}">{{post.like.count}}</span>
+                            {% if user.is_authenticated %}  <button id="like-btn-{{ post.id }}" class="btn btn-outline-secondary Likebtn" data-Liked="yes" data-post_id="{{ post.id }}">Dislike</button> {% endif %} <span>Likes: </span> <span id="like-count-{{ post.id }}">{{post.like.count}}</span>
                             {% else %}
-                                <button id="like-btn-{{ post.id }}" class="btn btn-outline-secondary Likebtn" data-Liked="no" data-post_id="{{ post.id }}">Like</button> <span id="like-count-{{ post.id }}">{{post.like.count}}</span>    
+                            {% if user.is_authenticated %}   <button id="like-btn-{{ post.id }}" class="btn btn-outline-secondary Likebtn" data-Liked="no" data-post_id="{{ post.id }}">Like</button> {% endif %} <span>Likes: </span> <span id="like-count-{{ post.id }}">{{post.like.count}}</span>    
                             {% endif %}    
                             </div>
                             <div class="text-right">
@@ -62,9 +62,9 @@
                                 <hr>
                                     {{post.Date}} 
                                     {% if request.user in post.like.all %}
-                                        <button id="like-btn-{{ post.id }}" class="btn btn-outline-secondary Likebtn" data-Liked="yes" data-post_id="{{ post.id }}">Dislike</button> <span id="like-count-{{ post.id }}">{{post.like.count}}</span>
+                                    {% if user.is_authenticated %}   <button id="like-btn-{{ post.id }}" class="btn btn-outline-secondary Likebtn" data-Liked="yes" data-post_id="{{ post.id }}">Dislike</button> {% endif %} <span>Likes: </span> <span id="like-count-{{ post.id }}">{{post.like.count}}</span>
                                     {% else %}
-                                        <button id="like-btn-{{ post.id }}" class="btn btn-outline-secondary Likebtn" data-Liked="no" data-post_id="{{ post.id }}">Like</button> <span id="like-count-{{ post.id }}">{{post.like.count}}</span>    
+                                    {% if user.is_authenticated %}  <button id="like-btn-{{ post.id }}" class="btn btn-outline-secondary Likebtn" data-Liked="no" data-post_id="{{ post.id }}">Like</button> {% endif %} <span>Likes: </span> <span id="like-count-{{ post.id }}">{{post.like.count}}</span>    
                                     {% endif %}   
                                 </div>
                             </div>
