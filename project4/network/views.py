@@ -154,7 +154,7 @@ def ProfilePage(request,user_id):
         "followingcount":userFollowing.count(),"page_obj":page_obj,"paginator":paginator}
         return render(request,"network/ProfilePage.html",context)
 
-      
+@login_required      
 def FollowingPage(request):
     userprofile=Profile.objects.get(user__id=request.user.id)
     userfollowing=userprofile.Following.all()
@@ -164,3 +164,22 @@ def FollowingPage(request):
     page_obj=paginator.get_page(page_number)
     context={"page_obj":page_obj,"posts":posts,"paginator":paginator}
     return render(request, "network/FollowingPage.html",context)
+
+@csrf_exempt
+def Liked(request):
+    if request.method=="POST":
+        Post_id=request.POST.get('id')
+        Liked=request.POST.get('Liked')
+        Post_target=Post.objects.get(id=Post_id)
+        if Liked=="no":
+            Post_target.like.add(request.user)
+            Post_target.save()
+            Liked="yes"
+            Likes=Post_target.like.count()
+            return JsonResponse({'status':201,'Liked':Liked,"CountLiked":Likes},status=201)
+        else:
+            Post_target.like.remove(request.user)
+            Post_target.save()
+            Liked="no"
+            Likes=Post_target.like.count()
+            return JsonResponse({'status':201,'Liked':Liked,"CountLiked":Likes},status=201)

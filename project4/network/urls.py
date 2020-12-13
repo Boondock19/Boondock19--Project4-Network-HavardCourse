@@ -10,5 +10,6 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("Profile/<int:user_id>",views.ProfilePage,name="Profile"),
     path("Following", views.FollowingPage, name="FollowingPage"),
-    path("EditPost/",views.EditPost)
+    path("EditPost/",views.EditPost),
+    path("Liked/",views.Liked),
 ]

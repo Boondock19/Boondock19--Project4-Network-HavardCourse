@@ -12,7 +12,7 @@ class Post(models.Model):
     like=models.ManyToManyField(User,blank=True,related_name="Post_likes")
 
     def __str__(self):
-        return f"This is a Post created By {self.user.username}"
+        return f"This is a Post created By {self.user.username}  and id:{self.pk}"
 
 class Profile(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="User_Profile")
@@ -20,4 +20,4 @@ class Profile(models.Model):
     Following=models.ManyToManyField(User,blank=True,related_name="User_Following")
 
     def __str__(self):
-        return f"This is the profile of f{self.user.username}"
+        return f"This is the profile of f{self.user.username} id:{self.id}"
